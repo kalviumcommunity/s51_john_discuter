@@ -5,7 +5,6 @@ import generateTokenAndSetCookie from "../utils/jwt.js";
 export const signUp = async (req, res) => {
   try {
     const { fullName, username, password, confirmPassword, gender } = req.body;
-    console.log(username, password, confirmPassword, gender);
     const user_name = await User.findOne({ username });
     if (password !== confirmPassword)
       return res.status(400).json("Passwords don't match");
