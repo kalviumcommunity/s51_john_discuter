@@ -3,6 +3,9 @@ import cors from "cors";
 import { authRouter } from "./routes/auth.routes.js";
 import { connectDB } from "./db/db.js";
 import dotenv from "dotenv"
+import msgRouter from "./routes/message.routes.js";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 dotenv.config()
 
@@ -10,6 +13,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 
 const router = express.Router();
 
@@ -20,6 +24,8 @@ router.get("/get", (req, res) => {
 });
 
 app.use("/auth", authRouter)
+app.use("/message", msgRouter)
+
 
 const db = async() => {
     try {
