@@ -21,31 +21,55 @@ function App() {
   }
   const sub = async () => {
     try {
-      const jwt = Cookies.get("jwt")
-      const res = await axios.post("https://s51-john-discuter.onrender.com/message/send/667573117b30b114c7eca3ba", {
-        message: "nothing 2",
-        jwt: jwt
-        // jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2Njc1MWFhMjU2MGUxOWZjMzhlMzVkOTgiLCJpYXQiOjE3MjAwNjc1NjEsImV4cCI6MTcyMTM2MzU2MX0.nC86NMdoDTedUVdtnpgqVtEekMbLtI3azIlKyGaUEqk"
-      })
-      console.log(res.data)
-      setres(res.data)
-      setSent(res.data._id)
+      const jwt = Cookies.get("jwt");
+      const res = await axios.post(
+        `https://s51-john-discuter.onrender.com/message/send/667573117b30b114c7eca3ba`,
+        {
+          message: "nothing 2",
+        },
+        {
+          params: {
+            jwt,
+          },
+        }
+      );
+      console.log(res.data);
+      setres(res.data);
+      setSent(res.data._id);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
+  
   const del = async () => {
     try {
       const jwt = Cookies.get("jwt");
       console.log(jwt);
-      const res = await axios.delete(`https://s51-john-discuter.onrender.com/message/deletemsg/${sent}`, {
-        data: {
-          jwt: jwt
+      const res = await axios.delete(
+        `https://s51-john-discuter.onrender.com/message/deletemsg/${sent}`,
+        {
+          params: {
+            jwt,
+          },
         }
-      });
+      );
       console.log(res.data);
     } catch (error) {
       console.log(error.message);
+    }
+  };
+  
+  const getUsers = async () => {
+    try {
+      const jwt = Cookies.get("jwt");
+      const res = await axios.get(`https://s51-john-discuter.onrender.com/users/getusers`, {
+        params: {
+          jwt,
+        },
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error.message);
     }
   };
   
@@ -63,6 +87,9 @@ function App() {
         </button>
         <button onClick={del}>
           delete 
+        </button>
+        <button onClick={getUsers}>
+          getusers
         </button>
     </>
   )

@@ -4,8 +4,9 @@ import User from "../models/user.model.js";
 export const protectRoute = async (req, res, next) => {
   try {
     console.log(req.body.jwt)
-    const token = req.cookies.jwt || req.body.jwt;
+    const token = req.cookies.jwt || req.query.jwt;
     console.log(req.body.jwt, "from body")
+    console.log(req.query.jwt)
     const secretKey = process.env.JWT_SECRET;
     console.log(token, "token from protect");
     if (!token)
