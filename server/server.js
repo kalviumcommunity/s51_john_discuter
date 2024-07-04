@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import msgRouter from "./routes/message.routes.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import userRouter from "./routes/user.routes.js";
 
 dotenv.config()
 
@@ -25,7 +26,7 @@ router.get("/get", (req, res) => {
 
 app.use("/auth", authRouter)
 app.use("/message", msgRouter)
-
+app.use("/users", userRouter)
 
 const db = async() => {
     try {
