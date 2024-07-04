@@ -1,5 +1,10 @@
 import express from "express";
 import cors from "cors";
+import { authRouter } from "./routes/auth.routes.js";
+import { connectDB } from "./db/db.js";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express();
 
@@ -14,9 +19,17 @@ router.get("/get", (req, res) => {
     });
 });
 
-// Registering the router with the app
-app.use("/", router);
+app.use("/auth", authRouter)
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+const db = async() => {
+    try {
+        await connectDB()
+        app.listen(3000, () => {
+            console.log("Server is running on port 3000");
+        });
+    } catch (error) {
+        
+    }
+}
+
+db()
