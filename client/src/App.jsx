@@ -5,6 +5,7 @@ import Cookies from "js-cookie"
 
 function App() {
   const [res, setres] = useState("")
+  const [sent, setSent] = useState(null)
   const result = async () => {
   try {
     const res = await axios.post("https://s51-john-discuter.onrender.com/auth/login", {
@@ -28,10 +29,26 @@ function App() {
       })
       console.log(res.data)
       setres(res.data)
+      setSent(res.data._id)
     } catch (error) {
       console.log(error.message)
     }
   }
+  const del = async () => {
+    try {
+      const jwt = Cookies.get("jwt");
+      console.log(jwt);
+      const res = await axios.delete(`https://s51-john-discuter.onrender.com/message/deletemsg/${sent}`, {
+        data: {
+          jwt: jwt
+        }
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  
   useEffect(() => 
     {result()}
   , [])
@@ -43,6 +60,9 @@ function App() {
         }</h1>
         <button onClick={sub}>
           send
+        </button>
+        <button onClick={del}>
+          delete 
         </button>
     </>
   )
