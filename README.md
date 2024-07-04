@@ -1,4 +1,4 @@
-** DISCUTER(discuss) a Chat App with MERN Stack and Socket.io**
+**DISCUTER(discuss) a Chat App with MERN Stack and Socket.io**
  
 Welcome to our Chat App repository! This is a real-time messaging application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) along with Socket.io for instant messaging capabilities. Below you'll find an overview of the project and how to get started.
 
