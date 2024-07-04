@@ -1,0 +1,18 @@
+meta {
+  name: send message
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:3000/message/send/667573117b30b114c7eca3ba
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2Njc1MWFhMjU2MGUxOWZjMzhlMzVkOTgiLCJpYXQiOjE3MjAwODMxOTEsImV4cCI6MTcyMTM3OTE5MX0.ultbO6zNSMki5FZ4f_ZjnvJae5MPgZs_JGQViORJKBk",
+  "message": "nothing"
+  }
+}
