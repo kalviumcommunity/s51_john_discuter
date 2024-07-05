@@ -1,34 +1,20 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
+import React from 'react'
+import {useStore} from "../app/store.js"
+import Sidebar, {} from "../components/Sidebar/Sidebar.jsx"
+import MessageContainer from '../components/messages/MessageContainer.jsx'
 
 const Home = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const jwt = Cookies.get('jwt');
-        const res = await axios.get('https://s51-john-discuter.onrender.com/users/getusers', {
-          headers: {
-            Authorization: `Bearer ${jwt}`
-          }
-        });
-        console.log(res.data);
-        setUsers(res.data)
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    };
-    
-    fetchUsers();
-  },);
-
+  const selectedConversation = useStore().selectedConversation 
   return (
-    <div>
-      {JSON.stringify(users)}
+    <div className='flex font-mono'>
+      <Sidebar />
+      {
+        selectedConversation ? 
+          <MessageContainer />
+          : <h1 className="text-red-600">select a convo</h1>
+      }
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
