@@ -12,7 +12,7 @@ const msgRouter = express.Router();
 
 msgRouter.post("/send/:id", protectRoute, sendMessage);
 msgRouter.post("/get/:id", protectRoute, getMessages);
-msgRouter.post("/getlatestmsg/:id", protectRoute, getLatestMessages);
+msgRouter.get("/getlatestmsg/:id", protectRoute, getLatestMessages);
 msgRouter.put("/updatemsg/:id", protectRoute, updateMessage);
 msgRouter.delete("/deletemsg/:id", protectRoute, deleteMessage)
 
