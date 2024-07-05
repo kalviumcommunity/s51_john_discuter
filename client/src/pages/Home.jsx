@@ -15,6 +15,7 @@ const Home = () => {
           }
         });
         console.log(res.data);
+        setUsers(res.data)
       } catch (error) {
         console.error('Error:', error.message);
       }
