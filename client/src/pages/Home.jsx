@@ -21,7 +21,7 @@ const Home = () => {
     };
     
     fetchUsers();
-  }, []);
+  },);
 
   return (
     <div>

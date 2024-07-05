@@ -13,7 +13,7 @@ function Reference() {
 
   const result = async () => {
     try {
-      const res = await axios.post('http://localhost:3000/auth/login', {
+      const res = await axios.post('https://s51-john-discuter.onrender.com/auth/login', {
         username: 'cornellewsjohn',
         password: 'cornellews'
       });
@@ -29,7 +29,7 @@ function Reference() {
     try {
       const jwt = Cookies.get('jwt');
       const res = await axios.post(
-        `http://localhost:3000/message/send/667573117b30b114c7eca3ba`,
+        `https://s51-john-discuter.onrender.com/message/send/667573117b30b114c7eca3ba`,
         {
           message: 'nothing 2'
         },
@@ -52,7 +52,7 @@ function Reference() {
       const jwt = Cookies.get('jwt');
       console.log(jwt);
       const res = await axios.delete(
-        `http://localhost:3000/message/deletemsg/${sent}`,
+        `https://s51-john-discuter.onrender.com/message/deletemsg/${sent}`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`
@@ -68,7 +68,7 @@ function Reference() {
   const getUsers = async () => {
     try {
       const jwt = Cookies.get('jwt');
-      const res = await axios.get(`http://localhost:3000/users/getusers`, {
+      const res = await axios.get(`https://s51-john-discuter.onrender.com/users/getusers`, {
         headers: {
           Authorization: `Bearer ${jwt}`
         }
