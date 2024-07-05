@@ -1,18 +1,17 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Cookies from "js-cookie";
 import { useStore } from "../app/store.js";
+import { useNavigate } from "react-router-dom";
 
-const useLogin = () => {
-  
+const useSignUp = () => {
   const url =
-    "https://s51-john-discuter.onrender.com/auth/login";
-  const setAuthUser = useStore().setAuthUser; 
+    "https://s51-john-discuter.onrender.com/auth/signup";
   const [loading, setLoading] = useState(false);
-  const login = async (data) => {
+  const setAuthUser = useStore().setAuthUser;
+  const nav = useNavigate()
+  const signup = async (data) => {
     setLoading(true);
-    console.log(data)
     try {
       const res = await axios.post(url, data);
       const token = res.data.token;
@@ -22,7 +21,7 @@ const useLogin = () => {
       // Set user data in localStorage
       localStorage.setItem("user", JSON.stringify(res.data));
       setAuthUser(res.data);
-      console.log("login complete")
+      nav("/")
       return res.data
     } catch (error) {
       console.log(error.message);
@@ -31,7 +30,7 @@ const useLogin = () => {
     }
   };
 
-  return { login, loading };
+  return { loading, signup };
 };
 
-export default useLogin;
+export default useSignUp;

@@ -1,43 +1,68 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import useLogin from "../../hooks/useLogin";
+import { Link, useNavigate } from "react-router-dom"
+import useSignUp from "../hooks/useSignUp";
+import toast from "react-hot-toast";
 
-const Login = () => {
+const SignUp = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm();
+  const nav = useNavigate()
 
-  const { login, loading } = useLogin()
-  const loginUser = async (data) => {
+  const { signup, loading } = useSignUp();
+  const signUp = async (data) => {
+    
     try {
-      const res = await login(data);
+      console.log(loading);
+      const res = await signup(data);
       console.log(res);
+      console.log(loading);
+      toast.success('Look at my styles.', {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: '#713200',
+        },
+        iconTheme: {
+          primary: '#713200',
+          secondary: '#FFFAEE',
+        },
+      });
+      nav("/")
     } catch (error) {
       console.log(error.message);
     }
   };
+
+  const password = watch("password");
+
   return (
     <div>
       <div className="flex flex-col items-center min-w-96 mx-auto m-1 mt-10">
-        <h1 className="">Login to Chat app</h1>
-        <form onSubmit={handleSubmit(loginUser)}>
+        <h1 className="">Sign Up for Chat app</h1>
+        <form onSubmit={handleSubmit(signUp)}>
           <label className="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="w-4 h-4 opacity-70"
-            >
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
             <input
               type="text"
               className="grow"
-              placeholder="username"
+              placeholder="Full Name"
+              {...register("fullName", {
+                required: "Full Name is required",
+              })}
+            />
+          </label>
+          {errors.fullName && (
+            <p className="text-red-500">{errors.fullName.message}</p>
+          )}
+          <label className="input input-bordered flex items-center gap-2">
+            <input
+              type="text"
+              className="grow"
+              placeholder="Username"
               {...register("username", {
                 required: "Username is required",
               })}
@@ -47,37 +72,83 @@ const Login = () => {
             <p className="text-red-500">{errors.username.message}</p>
           )}
           <label className="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="w-4 h-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clipRule="evenodd"
-              />
-            </svg>
             <input
               type="password"
               className="grow"
-              placeholder="password"
+              placeholder="Password"
               {...register("password", {
                 required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
+                },
               })}
             />
           </label>
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
+          <label className="input input-bordered flex items-center gap-2">
+            <input
+              type="password"
+              className="grow"
+              placeholder="Confirm Password"
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
+              })}
+            />
+          </label>
+          {errors.confirmPassword && (
+            <p className="text-red-500">{errors.confirmPassword.message}</p>
+          )}
+          <div className="dropdown dropdown-bottom">
+            <div tabIndex={0} role="button" className="btn m-1">
+              Boy or Girl ??
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <label>
+                  <input
+                    type="radio"
+                    value="boy"
+                    {...register("gender", {
+                      required: "Gender is required",
+                    })}
+                  />
+                  Boy
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type="radio"
+                    value="girl"
+                    {...register("gender", {
+                      required: "Gender is required",
+                    })}
+                  />
+                  Girl
+                </label>
+              </li>
+            </ul>
+          </div>
+          {errors.gender && (
+            <p className="text-red-500">{errors.gender.message}</p>
+          )}
+            <Link style={{color: "blue"}} to="/login">Already have an account? </Link>
           <div className="flex justify-around items-center p-6">
-            <button type="submit" className="btn bg-green-800 btn-active">
-              Login
+            <button type="submit" className="btn btn-primary btn-active" disabled={loading}>
+              {
+                loading 
+                ? <span className="loading loading-ball loading-md"></span>
+                : "Sign up" 
+              }
             </button>
-            <Link style={{ color: "blue" }} to="/signup">
-              New user ?
-            </Link>
           </div>
         </form>
       </div>
@@ -85,4 +156,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
