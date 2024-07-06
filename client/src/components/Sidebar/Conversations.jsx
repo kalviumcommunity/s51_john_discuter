@@ -7,17 +7,9 @@ const Conversations = () => {
 
   return (
     <div className="flex flex-col gap-4"> 
-      {users === "No User Found" ? (
-        <h1>No user Found</h1>
-      ) : !users ? (
-        <>
-          <ChatSkeleton />
-          <ChatSkeleton />
-          <ChatSkeleton />
-        </>
-      ) : (
+      { 
         users.map((user) => <Conversation key={user._id} user={user} />)
-      )}
+      }
     </div>
   );
 };

@@ -12,7 +12,7 @@ const Login = () => {
     try {
       const res = await login(data);
       console.log(res);
-      toast.success('Look at my styles.', {
+      toast.success('login successful', {
         style: {
           border: '1px solid #713200',
           padding: '16px',
