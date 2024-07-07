@@ -42,7 +42,7 @@ const Home = () => {
   const fetchlatestMessages = async () => {
     try {
       console.log(jwt);
-      const res = await axios.get(`http://localhost:3000/message/getlatestmsg/${authUser._id}`, {
+      const res = await axios.get(`https://s51-john-discuter.onrender.com/message/getlatestmsg/${authUser._id}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -73,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     const socketConnection = () => {
       if (authUser) {
-        const newSocket = io.connect("http://localhost:3000", {
+        const newSocket = io.connect("https://s51-john-discuter.onrender.com", {
           query: {
             userID: authUser._id
           }

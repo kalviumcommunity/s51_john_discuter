@@ -15,6 +15,7 @@ const MessageInput = () => {
   const onSubmit = async (data) => {
     try {
       await sendMessage(data.message)
+      reset()
     } catch (error) {
       console.log(error.message)
     }

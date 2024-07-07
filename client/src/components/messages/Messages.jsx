@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../app/store';
 import useGetMessages from '../../hooks/useGetMessages';
 import Message from './Message';
@@ -7,10 +7,14 @@ import {useForm} from "react-hook-form"
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import Cookies from "js-cookie"
+import { FiEdit } from "react-icons/fi";
+import { MdDeleteForever } from "react-icons/md";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 const Messages = () => {
   const { selectedConversation, messages, messageTobeEdited, setMessageTobeEdited } = useStore();
   const { loading, getMessages } = useGetMessages();
+  const [loadingdelUp, setLoadingUpdel] = useState({})
   const ref = useRef()
   const updateDialogRef = useRef()
   const jwt = Cookies.get('jwt');
@@ -24,9 +28,14 @@ const Messages = () => {
 
   const deleteMessage = async () => {
     try {
+      setLoadingUpdel({
+        ...loadingdelUp,
+        deletion: true,
+        updation: false,
+      })
       console.log(jwt);
       const res = await axios.delete(
-        `http://localhost:3000/message/deletemsg/${messageTobeEdited.id}`,
+        `https://s51-john-discuter.onrender.com/message/deletemsg/${messageTobeEdited.id}`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`
@@ -38,6 +47,12 @@ const Messages = () => {
     } catch (error) {
       console.error("Error deleting message:", error.message);
       toast.error("Error while deleting message, try again");
+    }finally{
+      setLoadingUpdel({
+        ...loadingdelUp,
+        deletion: false,
+        updation: false,
+      })
     }
   };
 
@@ -48,9 +63,13 @@ const Messages = () => {
 
   const handleUpdateMessage = async (data) => {
     try {
-      console.log("Updating message with data:", data);
+      setLoadingUpdel({
+        ...loadingdelUp,
+        deletion: false,
+        updation: true,
+      })
       const res = await axios.put(
-        `http://localhost:3000/message/updatemsg/${messageTobeEdited.id}`,
+        `https://s51-john-discuter.onrender.com/message/updatemsg/${messageTobeEdited.id}`,
         { message: data.message},
         {
           headers: {
@@ -63,6 +82,12 @@ const Messages = () => {
       updateMessageRefModal.current.close();
     } catch (error) {
       console.error("Error updating message:", error.message);
+    }finally{
+      setLoadingUpdel({
+        ...loadingdelUp,
+        deletion: false,
+        updation: false,
+      })
     }
   };
 
@@ -99,13 +124,17 @@ const Messages = () => {
                 onClick={deleteMessage}
                 className="btn btn-outline btn-error mr-8"
               >
-                delete
+                {
+                  loadingdelUp.deletion 
+                  ? <span className='loading loading-spinner loading-md'></span>
+                  : <MdDeleteForever />
+                  }
               </button>
               <button
                 className="btn btn-outline btn-info"
                 onClick={updateMessage}
               >
-                edit
+                <FiEdit />
               </button>
             </div>
           </form>
@@ -123,8 +152,12 @@ const Messages = () => {
             />
             {errors.message && <span>This field is required</span>}
             <div className="modal-action">
-              <button className="btn" type="submit">
-                done
+              <button className="btn btn-outline btn-success" type="submit">
+              {
+                  loadingdelUp.updation 
+                  ? <span className='loading loading-spinner loading-md'></span>
+                  : <IoCheckmarkDoneCircle />
+              }
               </button>
             </div>
           </div>

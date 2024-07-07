@@ -13,7 +13,7 @@ const useSendMessage = () => {
             setLoading(true)
             const jwt = Cookies.get('jwt');
       const res = await axios.post(
-        `http://localhost:3000/message/send/${selectedConversation.id}`,
+        `https://s51-john-discuter.onrender.com/message/send/${selectedConversation.id}`,
         {
             message
         },
