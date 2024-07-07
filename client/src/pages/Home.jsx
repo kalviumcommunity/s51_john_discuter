@@ -5,10 +5,20 @@ import MessageContainer from '../components/messages/MessageContainer.jsx';
 import Cookies from "js-cookie";
 import axios from "axios";
 import ChatSkeleton from '../skeletons/ChatSkeleton.jsx';
-import io from "socket.io-client"
+import io from "socket.io-client";
 
 const Home = () => {
-  const { selectedConversation, setUsers, setFilteredUsers, authUser, setLatestMessage, setSocket, socket } = useStore();
+  const {
+    selectedConversation,
+    setUsers,
+    setFilteredUsers,
+    authUser,
+    setLatestMessage,
+    setSocket,
+    socket,
+    setOnlineUsers,
+    onlineUsers
+  } = useStore();
   const [loading, setLoading] = useState(true);
 
   const jwt = Cookies.get('jwt');
@@ -56,35 +66,43 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const socketConnection = () => {
-    if (authUser){
-      const newSocket = io.connect("http://localhost:3000", {
-        query: {
-          userID: authUser._id
-        }
-      })
-      setSocket(newSocket)
-      return () => socket.close()
-    }else{
-      setSocket(null)
-      socket.close()
-    }
-  }
   useEffect(() => {
-    socketConnection()
-  }, [authUser])
+    const socketConnection = () => {
+      if (authUser) {
+        const newSocket = io.connect("http://localhost:3000", {
+          query: {
+            userID: authUser._id
+          }
+        });
+        setSocket(newSocket);
+        newSocket.on("onlineUsers", (users) => {
+          setOnlineUsers(users);
+        });
+
+        return () => {
+          newSocket.disconnect();
+        };
+      }
+    };
+
+    socketConnection();
+  }, [authUser]);
+
+  useEffect(() => {
+    console.log(onlineUsers);
+  }, [onlineUsers]);
 
   return (
     <div className='flex font-mono'>
       {loading ? (
         <div className='flex flex-col'>
-        <ChatSkeleton />
-        <ChatSkeleton />
-        <ChatSkeleton />
-        <ChatSkeleton />
-        <ChatSkeleton />
-        <ChatSkeleton />
-      </div>
+          <ChatSkeleton />
+          <ChatSkeleton />
+          <ChatSkeleton />
+          <ChatSkeleton />
+          <ChatSkeleton />
+          <ChatSkeleton />
+        </div>
       ) : (
         <>
           <Sidebar />
