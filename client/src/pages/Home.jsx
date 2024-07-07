@@ -73,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     const socketConnection = () => {
       if (authUser) {
-        const newSocket = io.connect("https://s51-john-discuter.onrender.com", {
+        const newSocket = io("https://s51-john-discuter.onrender.com", {
           query: {
             userID: authUser._id
           }
