@@ -5,9 +5,10 @@ import MessageContainer from '../components/messages/MessageContainer.jsx';
 import Cookies from "js-cookie";
 import axios from "axios";
 import ChatSkeleton from '../skeletons/ChatSkeleton.jsx';
+import io from "socket.io-client"
 
 const Home = () => {
-  const { selectedConversation, users, setUsers, setFilteredUsers, authUser, setLatestMessage } = useStore();
+  const { selectedConversation, setUsers, setFilteredUsers, authUser, setLatestMessage, setSocket, socket } = useStore();
   const [loading, setLoading] = useState(true);
 
   const jwt = Cookies.get('jwt');
@@ -54,6 +55,24 @@ const Home = () => {
 
     fetchData();
   }, []);
+
+  const socketConnection = () => {
+    if (authUser){
+      const newSocket = io.connect("http://localhost:3000", {
+        query: {
+          userID: authUser._id
+        }
+      })
+      setSocket(newSocket)
+      return () => socket.close()
+    }else{
+      setSocket(null)
+      socket.close()
+    }
+  }
+  useEffect(() => {
+    socketConnection()
+  }, [authUser])
 
   return (
     <div className='flex font-mono'>
