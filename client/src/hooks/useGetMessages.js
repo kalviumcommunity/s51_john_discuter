@@ -13,7 +13,7 @@ const useGetMessages = () => {
         try {
             setLoading(true)
             console.log(selectedConversation.id)
-            const res = await axios.get(`https://s51-john-discuter.onrender.com/message/get/${selectedConversation.id}`, {
+            const res = await axios.get(`http://localhost:3000/message/get/${selectedConversation.id}`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }

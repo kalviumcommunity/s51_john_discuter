@@ -4,8 +4,9 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import MessageContainer from '../components/messages/MessageContainer.jsx';
 import Cookies from "js-cookie";
 import axios from "axios";
-import ChatSkeleton from '../skeletons/ChatSkeleton.jsx';
+import ChatSkeleton from '../skeletons/ChatSkeleton.jsx'
 import io from "socket.io-client";
+import { useListenMessage } from '../hooks/useListenMessage.js';
 
 const Home = () => {
   const {
@@ -15,9 +16,9 @@ const Home = () => {
     authUser,
     setLatestMessage,
     setSocket,
-    socket,
     setOnlineUsers,
-    onlineUsers
+    messages,
+    socket
   } = useStore();
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +42,7 @@ const Home = () => {
   const fetchlatestMessages = async () => {
     try {
       console.log(jwt);
-      const res = await axios.get(`https://s51-john-discuter.onrender.com/message/getlatestmsg/${authUser._id}`, {
+      const res = await axios.get(`http://localhost:3000/message/getlatestmsg/${authUser._id}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -67,6 +68,9 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    console.log(messages)
+  }, [messages])
+  useEffect(() => {
     const socketConnection = () => {
       if (authUser) {
         const newSocket = io.connect("http://localhost:3000", {
@@ -80,17 +84,15 @@ const Home = () => {
         });
 
         return () => {
-          newSocket.disconnect();
+          newSocket.close();
         };
       }
     };
 
-    socketConnection();
+    return () => socketConnection();
   }, [authUser]);
 
-  useEffect(() => {
-    console.log(onlineUsers);
-  }, [onlineUsers]);
+    useListenMessage()
 
   return (
     <div className='flex font-mono'>

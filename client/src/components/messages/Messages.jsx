@@ -8,7 +8,7 @@ const Messages = () => {
   const { selectedConversation, messages } = useStore();
   const { loading, getMessages } = useGetMessages();
   const ref = useRef()
-
+  
   useEffect(() => {
     const fetchMessages = async () => {
       if (!selectedConversation) return;
@@ -20,7 +20,7 @@ const Messages = () => {
     };
     fetchMessages();
   }, [selectedConversation]);
-
+  
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollTo({
@@ -29,9 +29,9 @@ const Messages = () => {
       });
     }
   }, [messages]);
-
+  
   return (
-    <div className='h-[500px] w-[1000px] overflow-y-scroll'>
+    <div ref={ref} className='h-[500px] w-[1000px] overflow-y-scroll'>
       {loading ? (
         <div className="flex-col items-end h-full">
           <ChatBubbleSkeleton start={true} />
