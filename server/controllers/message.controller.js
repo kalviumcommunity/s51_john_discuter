@@ -102,6 +102,13 @@ export const updateMessage = async (req, res) => {
       { message },
       { new: true }
     );
+
+    const receiverSocketID = getSocketId(newMessage.receiverId);
+    const senderSocketID = getSocketId(newMessage.senderId);
+    
+    io.to(receiverSocketID).emit("updatedmessage", newMessage)
+    io.to(senderSocketID).emit("updatedmessage", newMessage)
+
     res.status(200).json(newMessage);
 
   } catch (error) {
@@ -114,6 +121,13 @@ export const deleteMessage = async (req, res) => {
     const { id: _id } = req.params
     const deletedMessage = await Message.findByIdAndDelete(_id)
    
+    const receiverSocketID = getSocketId(deletedMessage.receiverId);
+    const senderSocketID = getSocketId(deletedMessage.senderId);
+
+    io.to(receiverSocketID).emit("deletemessage", deletedMessage);
+    io.to(senderSocketID).emit("deletemessage", deletedMessage);
+    
+
     return res.json({
       deletedMessage
     })
