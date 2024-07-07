@@ -10,8 +10,14 @@ import userRouter from "./routes/user.routes.js";
 import { app, server } from "./socket/socket.js"
 
 dotenv.config()
+const corsOptions = {
+    origin: "https://s51-john-discuter.netlify.app",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  };
+  
+app.use(cors(corsOptions));
 
-app.use(cors());
 app.use(express.json());
 app.use(cookieParser())
 

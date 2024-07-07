@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import MessageContainer from '../components/messages/MessageContainer.jsx';
 import Cookies from "js-cookie";
 import axios from "axios";
-import ChatSkeleton from '../skeletons/ChatSkeleton.jsx'
+import ChatSkeleton from '../skeletons/ChatSkeleton.jsx';
 import io from "socket.io-client";
 import { useListenMessage } from '../hooks/useListenMessage.js';
 
@@ -68,31 +68,30 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log(messages)
-  }, [messages])
+    console.log(messages);
+  }, [messages]);
+
   useEffect(() => {
-    const socketConnection = () => {
-      if (authUser) {
-        const newSocket = io("https://s51-john-discuter.onrender.com", {
-          query: {
-            userID: authUser._id
-          }
-        });
-        setSocket(newSocket);
-        newSocket.on("onlineUsers", (users) => {
-          setOnlineUsers(users);
-        });
+    if (authUser) {
+      const newSocket = io("https://s51-john-discuter.onrender.com", {
+        query: {
+          userID: authUser._id,
+        },
+        secure: true,
+        transports: ['websocket'],
+      });
+      setSocket(newSocket);
+      newSocket.on("onlineUsers", (users) => {
+        setOnlineUsers(users);
+      });
 
-        return () => {
-          newSocket.close();
-        };
-      }
-    };
-
-    return () => socketConnection();
+      return () => {
+        newSocket.close();
+      };
+    }
   }, [authUser]);
 
-    useListenMessage()
+  useListenMessage();
 
   return (
     <div className='flex font-mono'>
