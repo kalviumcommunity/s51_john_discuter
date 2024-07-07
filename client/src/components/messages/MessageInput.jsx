@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { IoIosSend } from "react-icons/io";
+import useSendMessage from "../../hooks/useSendMessage";
 
 const MessageInput = () => {
   const {
@@ -9,8 +10,14 @@ const MessageInput = () => {
     handleSubmit,
   } = useForm();
 
+  const {loading, sendMessage} = useSendMessage()
+
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      await sendMessage(data.message)
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   return (
@@ -27,7 +34,11 @@ const MessageInput = () => {
           type="submit"
           className="btn btn-ghost btn-circle"
         >
-          <IoIosSend />
+          {
+            loading 
+             ? <span className="loading loading-spinner loading-md"></span>
+             : <IoIosSend />
+          }
         </button>
       </form>
     </>

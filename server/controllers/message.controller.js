@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -26,6 +27,19 @@ export const sendMessage = async (req, res) => {
     });
 
     if (newMessage) conversation.messages.push(newMessage._id);
+    
+    const receiverSocketId = getSocketId(receiverId)
+    const senderSocketId = getSocketId(senderId)
+    console.log(receiverSocketId, senderSocketId, "ids")
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+      console.log("message emitted to ", receiverSocketId)
+    }
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
+      console.log("message emitted to ", senderSocketId)
+    }
+
     await conversation.save();
 
     res.status(201).json(newMessage);
@@ -88,6 +102,13 @@ export const updateMessage = async (req, res) => {
       { message },
       { new: true }
     );
+
+    const receiverSocketID = getSocketId(newMessage.receiverId);
+    const senderSocketID = getSocketId(newMessage.senderId);
+    
+    io.to(receiverSocketID).emit("updatedmessage", newMessage)
+    io.to(senderSocketID).emit("updatedmessage", newMessage)
+
     res.status(200).json(newMessage);
 
   } catch (error) {
@@ -100,6 +121,13 @@ export const deleteMessage = async (req, res) => {
     const { id: _id } = req.params
     const deletedMessage = await Message.findByIdAndDelete(_id)
    
+    const receiverSocketID = getSocketId(deletedMessage.receiverId);
+    const senderSocketID = getSocketId(deletedMessage.senderId);
+
+    io.to(receiverSocketID).emit("deletemessage", deletedMessage);
+    io.to(senderSocketID).emit("deletemessage", deletedMessage);
+    
+
     return res.json({
       deletedMessage
     })

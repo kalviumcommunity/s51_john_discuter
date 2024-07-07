@@ -3,12 +3,16 @@ import { useStore } from "../../app/store.js"
 import Messages from './Messages.jsx'
 import MessageInput from './MessageInput.jsx'
 const MessageContainer = () => {
-  const { selectedConversation, messages } = useStore()
+  const { selectedConversation, messages, onlineUsers } = useStore()
+  const isOnline = onlineUsers.includes(selectedConversation.id);
 
   return (
     <div>
       <div className="flex items-center">
-        <img src={selectedConversation.profilePic} className="avatar rounded-full h-[70px] pr-10" />
+        <div className={`avatar w-[70px]
+             ${isOnline ? "online" : "offline"} mr-5`}>
+          <img src={selectedConversation.profilePic} />
+        </div>
         <h1>{selectedConversation.fullName}</h1>
       </div>
       {

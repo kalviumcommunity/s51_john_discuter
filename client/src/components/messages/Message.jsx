@@ -2,7 +2,7 @@ import React from "react";
 import { useStore } from "../../app/store";
 import { format, formatDistanceToNow } from "date-fns";
 
-const Message = ({ message }) => {
+const Message = ({ message, updateDialogRef }) => {
   const authUser = useStore().authUser;
   const setMessageTobeEdited = useStore().setMessageTobeEdited;
   const current_user_id =
@@ -19,6 +19,13 @@ const Message = ({ message }) => {
     return format(date, "PPpp");
   };
 
+  const handleMessageEdit = () => {
+    if (current_user_id === message.senderId) {
+      setMessageTobeEdited(message._id, message.message);
+      updateDialogRef.current.showModal();
+    }
+  };
+
   const EditedLabel = ({ isEdited }) => {
     return isEdited ? (
       <p style={{ textAlign: "right" }} className="text-red-400">
@@ -30,6 +37,7 @@ const Message = ({ message }) => {
 
   return (
     <div
+    onClick={handleMessageEdit}
       className={`chat ${
         current_user_id === message.receiverId ? "chat-start" : "chat-end"
       }`}
