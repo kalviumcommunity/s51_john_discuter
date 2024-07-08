@@ -10,6 +10,8 @@ import Cookies from "js-cookie"
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteForever } from "react-icons/md";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 
 const Messages = () => {
   const { selectedConversation, messages, messageTobeEdited, setMessageTobeEdited } = useStore();
@@ -26,12 +28,22 @@ const Messages = () => {
   } = useForm();
   const updateMessageRefModal = useRef()
 
+  const starMessage = async() => {
+    try {
+      const res = await axios.patch(`http://localhost:3000/message/star/${messageTobeEdited.id}`)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   const deleteMessage = async () => {
     try {
       setLoadingUpdel({
         ...loadingdelUp,
         deletion: true,
         updation: false,
+        star: false,
       })
       console.log(jwt);
       const res = await axios.delete(
@@ -52,6 +64,7 @@ const Messages = () => {
         ...loadingdelUp,
         deletion: false,
         updation: false,
+        star: false
       })
     }
   };
@@ -67,6 +80,7 @@ const Messages = () => {
         ...loadingdelUp,
         deletion: false,
         updation: true,
+        star: false
       })
       const res = await axios.put(
         `https://s51-john-discuter.onrender.com/message/updatemsg/${messageTobeEdited.id}`,
@@ -87,6 +101,7 @@ const Messages = () => {
         ...loadingdelUp,
         deletion: false,
         updation: false,
+        star: false
       })
     }
   };
@@ -135,6 +150,9 @@ const Messages = () => {
                 onClick={updateMessage}
               >
                 <FiEdit />
+              </button>
+              <button>
+                  <CiStar />
               </button>
             </div>
           </form>

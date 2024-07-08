@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "https://avatar.iran.liara.run/public/boy/?username=john",
         },
+        starred: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Message",
+        }]
     },
     { timestamps: true }
 );
