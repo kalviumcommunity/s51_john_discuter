@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://s51-john-discuter.netlify.app",
+    origin: ["https://s51-john-discuter.netlify.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });

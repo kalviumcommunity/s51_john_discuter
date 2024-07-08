@@ -11,7 +11,7 @@ import { app, server } from "./socket/socket.js"
 
 dotenv.config()
 const corsOptions = {
-    origin: "https://s51-john-discuter.netlify.app",
+    origin: ["https://s51-john-discuter.netlify.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   };
