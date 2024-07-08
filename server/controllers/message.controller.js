@@ -1,6 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getSocketId, io } from "../socket/socket.js";
+import User from "../models/user.model.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -135,5 +136,75 @@ export const deleteMessage = async (req, res) => {
     res.status(500).json({
       error: error.message
     })
+  }
+}
+
+export const starredMessages = async (req, res) => {
+  try {
+    const { id: _id } = req.params;
+    const user = await User.findById(_id).populate('starred');
+    console.log(user, "starred")
+    if (!user) {
+      return res.status(401).json({
+        message: "User not found"
+      });
+    }
+    return res.status(200).json({
+      starredMessages: user.starred
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      error: error.message
+    });
+  }
+}
+
+export const starMessage = async (req, res) => {
+  try {
+    const { id: messageId } = req.params;
+    let user = req.user
+    user = await User.findById(user._id)
+    const userId = user._id
+    console.log(user._id, "star")
+    if (!user) {
+      return res.status(401).json({
+        message: "User not found"
+      });
+    }
+
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return res.status(404).json({
+        message: "Message not found"
+      });
+    }
+
+    const messageIndex = message.starred.indexOf(userId);
+    const userIndex = user.starred.indexOf(messageId);
+
+    if (messageIndex === -1) {
+      // Add star
+      message.starred.push(userId);
+      user.starred.push(messageId);
+    } else {
+      // Remove star
+      message.starred.splice(messageIndex, 1);
+      user.starred.splice(userIndex, 1);
+    }
+
+    await message.save();
+    await user.save();
+
+    return res.status(200).json({
+      message: "Star status updated successfully",
+      starredMessage: message,
+      starredUser: user
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      error: error.message
+    });
   }
 }
