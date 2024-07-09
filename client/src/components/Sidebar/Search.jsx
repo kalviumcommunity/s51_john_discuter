@@ -6,7 +6,7 @@ const Search = () => {
   const { users, filteredUsers, setFilteredUsers } = useStore()
   const [input, setInput] = useState()
   useEffect(() => {
-    if (input == "")
+    if (!input)
       setFilteredUsers(users)
     else{
       setFilteredUsers(users.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase())))
