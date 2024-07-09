@@ -193,7 +193,7 @@ export const starMessage = async (req, res) => {
       user.starred.splice(userIndex, 1);
     }
 
-    await message.save();
+    await message.save({timestamps: false});
     await user.save();
 
     return res.status(200).json({
