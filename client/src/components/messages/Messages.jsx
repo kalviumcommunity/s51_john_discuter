@@ -20,6 +20,7 @@ const Messages = () => {
   const ref = useRef();
   const updateDialogRef = useRef();
   const jwt = Cookies.get('jwt');
+  const starRef = useRef()
   const {
     register,
     handleSubmit,
@@ -48,6 +49,7 @@ const Messages = () => {
         msg._id === updatedMessage._id ? { ...msg, starred: updatedMessage.starred } : msg
       );
       setMessages(updatedMessages);
+      starRef.current.close()
       console.log(res.data, "starred message");
     } catch (error) {
       console.log(error.message);
@@ -147,18 +149,17 @@ const Messages = () => {
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollTo({
-        bottom: ref.current.scrollHeight,
+        top: ref.current.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages, selectedConversation, loading]);
 
   return (
-    <div ref={ref} className='h-[500px] w-[1000px] overflow-y-scroll'>
+    <div ref={ref} className='h-[650px] w-[1150px] overflow-y-scroll'>
       <dialog id="updateDeleteDialog" className="modal" ref={updateDialogRef}>
         <div className='modal-box'>
           <p className="text-purple-400">{messageTobeEdited.message}</p>
-          <p className="text-purple-400">{messageTobeEdited.id}</p>
           <div className="modal-action">
             <button
               onClick={(e) => {
@@ -223,6 +224,30 @@ const Messages = () => {
           </div>
         </form>
       </dialog>
+      <dialog id="starMessage" className="modal" ref={starRef}>
+        <div className='modal-box'>
+          <p className="text-purple-400">{messageTobeEdited.message}</p>
+          
+          <div className="modal-action">
+            
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                starMessage();
+              }}
+              className={`btn ${!messageTobeEdited.isStarred && "btn-outline"} btn-warning`}
+            >
+              {
+                loadingdelUp.star 
+                ? <span className='loading loading-spinner loading-sm'></span>
+                : messageTobeEdited.isStarred
+                  ? <FaStar />
+                  : <CiStar />
+              }
+            </button>
+          </div>
+        </div>
+      </dialog>
       {loading ? (
         <div className="flex-col items-end h-full">
           <ChatBubbleSkeleton start={true} />
@@ -239,6 +264,7 @@ const Messages = () => {
         messages.map((message) => (
           <Message
             updateDialogRef={updateDialogRef}
+            starRef={starRef}
             message={message}
             key={message._id}
           />

@@ -5,7 +5,7 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 
-const Message = ({ message, updateDialogRef }) => {
+const Message = ({ message, updateDialogRef, starRef }) => {
   const authUser = useStore().authUser;
   const setMessageTobeEdited = useStore().setMessageTobeEdited;
   const isStarred = message.starred.includes(authUser._id)
@@ -24,9 +24,11 @@ const Message = ({ message, updateDialogRef }) => {
   };
 
   const handleMessageEdit = () => {
+    setMessageTobeEdited(message._id, message.message, isStarred);
     if (current_user_id === message.senderId) {
-      setMessageTobeEdited(message._id, message.message, isStarred);
       updateDialogRef.current.showModal();
+    }else{
+      starRef.current.showModal()
     }
   };
 
@@ -45,10 +47,10 @@ const Message = ({ message, updateDialogRef }) => {
       className={`chat ${current_user_id === message.receiverId ? "chat-start" : "chat-end"
         }`}
     >
-      <div className="chat-bubble">
+      <div className={`chat-bubble ${current_user_id === message.receiverId ? "bg-purple-950" : "bg-rose-950"}`}>
         {message.message}
         <EditedLabel isEdited={createdAt.getTime() !== updatedAt.getTime()} />
-        <p>{
+        <p className="text-yellow-300">{
           isStarred
             && <FaStar />
         }</p>

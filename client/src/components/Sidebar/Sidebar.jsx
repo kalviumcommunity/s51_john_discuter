@@ -10,7 +10,6 @@ const Sidebar = () => {
       <Profile />
       <Search />
       <Conversations />
-      <LogoutButton />
     </div>
   );
 };
