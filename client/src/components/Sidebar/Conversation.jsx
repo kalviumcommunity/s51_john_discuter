@@ -23,7 +23,7 @@ const Conversation = ({ user }) => {
         onClick={() => handleSelect(user._id, user.fullName, user.profilePic)}
       >
         <div className="flex gap-2 items-center py-2 px-1">
-          <div className={` avatar w-[50px]
+          <div className={` avatar w-[50px] h-[50px]
              ${isOnline ? "online" : "offline"} `}>
             <img
               className="rounded-full"

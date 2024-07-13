@@ -8,7 +8,7 @@
   }
   
   .skeleton-bubble {
-    background-color: #e0e0e0;
+    background-color: #000000;
     height: 30px;
     width: 300px;
     margin-bottom: 10px;
@@ -16,7 +16,7 @@
   }
   
   .skeleton-footer {
-    background-color: #e0e0e0;
+    background-color: #414141;
     height: 10px;
     width: 50px;
     border-radius: 5px;

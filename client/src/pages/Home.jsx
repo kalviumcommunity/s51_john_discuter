@@ -7,6 +7,7 @@ import axios from "axios";
 import ChatSkeleton from '../skeletons/ChatSkeleton.jsx';
 import io from "socket.io-client";
 import { useListenMessage } from '../hooks/useListenMessage.js';
+import ChatBubbleSkeleton from '../skeletons/ChatBubbleSkeleton.jsx';
 
 const Home = () => {
   const {
@@ -110,7 +111,7 @@ const Home = () => {
           {JSON.stringify(selectedConversation) !== "{}" ? (
             <MessageContainer />
           ) : (
-            <h1 className="text-red-600">Select a convo</h1>
+            <h1 className="text-red-600 m-[200px] pl-[100px]">Select a conversation</h1>
           )}
         </>
       )}

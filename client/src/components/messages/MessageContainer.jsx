@@ -7,11 +7,11 @@ const MessageContainer = () => {
   const isOnline = onlineUsers.includes(selectedConversation.id);
 
   return (
-    <div>
-      <div className="flex items-center">
-        <div className={`avatar w-[70px]
+    <div className='h-[800px]'>
+      <div className="flex items-center w-[1000px] justify-around">
+        <div className={`avatar w-[70px] h-[70px]
              ${isOnline ? "online" : "offline"} mr-5`}>
-          <img src={selectedConversation.profilePic} />
+          <img className='rounded-full h-[100px] w-[150px]' src={selectedConversation.profilePic} />
         </div>
         <h1>{selectedConversation.fullName}</h1>
       </div>

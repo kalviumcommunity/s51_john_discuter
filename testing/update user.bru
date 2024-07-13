@@ -1,0 +1,21 @@
+meta {
+  name: update user
+  type: http
+  seq: 10
+}
+
+put {
+  url: https://s51-john-discuter.onrender.com/users/updateuser
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "data": {
+      "profilePic": "https://your-firebase-storage-profile-pic-url.com/path/to/image.jpg",
+    "fullName": "updated"
+    }
+  }
+  
+}
