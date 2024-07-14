@@ -257,8 +257,7 @@ const Messages = () => {
         </div>
       ) : messages && messages.length === 0 && JSON.stringify(selectedConversation) !== "{}" ? (
         <>
-          <h1 className="text-red-500">Start a conversation{selectedConversation.fullName} j</h1>
-          <h2 className="text-blue-400">Say Hi</h2>
+          <h1 className="text-blue-500 mt-10">say hi to {selectedConversation.fullName}</h1>
         </>
       ) : (
         messages.map((message) => (
