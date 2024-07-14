@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <div className='m-10 p-[500px] font-mono'>
       <div className="flex flex-col items-center min-w-96 mx-auto m-1 mt-10">
-        <h1 className="text-rose-300">Login</h1>
+        <h1 className="text-rose-300 mb-5">Login</h1>
         <form onSubmit={handleSubmit(userLogin)}>
           <label className="input input-bordered flex items-center gap-2">
             <svg
