@@ -5,32 +5,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Login = () => {
-  const { register, formState: { errors }, handleSubmit } = useForm();
+  const { register, formState: { errors }, handleSubmit, resetField } = useForm();
   const { login, loading } = useLogin();
   const nav = useNavigate()
   const userLogin = async (data) => {
     try {
       const res = await login(data);
-      console.log(res);
-      toast.success('login successful', {
-        style: {
-          border: '1px solid #713200',
-          padding: '16px',
-          color: '#713200',
-        },
-        iconTheme: {
-          primary: '#713200',
-          secondary: '#FFFAEE',
-        },
-      });
-      nav("/")
+      if(res && res.token){
+        nav("/")
+      }else{
+        toast.error("invalid credentials")
+      }
     } catch (error) {
       console.error("Login error:", error.message);
     }
   };
 
   return (
-    <div>
+    <div className='m-10 p-[500px] font-mono'>
       <div className="flex flex-col items-center min-w-96 mx-auto m-1 mt-10">
         <h1 className="">Login to Chat app</h1>
         <form onSubmit={handleSubmit(userLogin)}>

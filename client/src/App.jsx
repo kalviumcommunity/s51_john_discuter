@@ -4,8 +4,6 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectRoute from './security/ProtectRoute'
 import Home from './pages/Home'
 import SignUp from './pages/SignUp'
-import Toaster from "react-hot-toast"
-import Reference from './reference'
 
 const App = () => {
   return (
@@ -17,7 +15,6 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<SignUp />} />
       </Routes>
-      {/* <Reference /> */}
     </div>
   )
 }

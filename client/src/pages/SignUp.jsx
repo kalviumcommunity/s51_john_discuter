@@ -41,9 +41,9 @@ const SignUp = () => {
   const password = watch("password");
 
   return (
-    <div>
+    <div className="m-10 p-[500px] font-mono">
       <div className="flex flex-col items-center min-w-96 mx-auto m-1 mt-10">
-        <h1 className="">Sign Up for Chat app</h1>
+        <h1 className="text-purple-300 mb-5">Sign Up</h1>
         <form onSubmit={handleSubmit(signUp)}>
           <label className="input input-bordered flex items-center gap-2">
             <input
@@ -140,7 +140,9 @@ const SignUp = () => {
           {errors.gender && (
             <p className="text-red-500">{errors.gender.message}</p>
           )}
-            <Link style={{color: "blue"}} to="/login">Already have an account? </Link>
+          <div>
+          <Link style={{color: "blue"}} to="/login">Already have an account? </Link>
+          </div>
           <div className="flex justify-around items-center p-6">
             <button type="submit" className="btn btn-primary btn-active" disabled={loading}>
               {
