@@ -16,3 +16,8 @@ Welcome to our Chat App repository! This is a real-time messaging application bu
 - **Daisy UI:** An accessible and reusable component library built on Tailwind CSS for simplified UI development.
 - **Tailwind CSS:** A utility-first CSS framework for rapid and custom design without traditional CSS.
 - **Zustand:** Lightweight state management for React with a minimalistic API and declarative approach.
+
+### deployment 
+
+-**Fronted:** [click](https://s51-john-discuter.netlify.app)
+-**Backend:** [click](https://s51-john-discuter.onrender.com)
