@@ -13,7 +13,7 @@ const io = new Server(server, {
 });
 
 const onlineUsers = {};
-const getSocketId = (socketId) => onlineUsers[socketId];
+const getSocketId = (userId) => onlineUsers[userId];
 
 io.on("connection", (socket) => {
   console.log("user socket id", socket.id);
